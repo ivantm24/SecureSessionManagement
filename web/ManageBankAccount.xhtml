@@ -7,7 +7,9 @@
     </h:head>
     <h:body>
         <h:messages/>
-        Welcome to the banking system
+        <p>Welcome to the banking system</p>
+        <p>User name: #{mbSession.user}</p>
+        <p>Role: #{mbSession.role}</p>
         <h:form>
             <h:commandButton value="view loan history" action="viewLoanHistory"/>
             <h:commandButton value="view transaction history" action="viewTransactionHistory"/>
