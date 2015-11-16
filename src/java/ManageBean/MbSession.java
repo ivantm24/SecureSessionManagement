@@ -28,6 +28,11 @@ public class MbSession {
     public String getUser() {
         return user;
     }
+    
+    public String getRole(){
+        User.Role currentRole=(User.Role) httpServletRequest.getSession().getAttribute("userRole");
+        return currentRole.toString();
+    }
 
     public void setUser(String user) {
         this.user = user;
