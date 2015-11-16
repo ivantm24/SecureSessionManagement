@@ -51,8 +51,11 @@ public class MbLogin {
     }
     
     public String login(){
-        if(user.equals("A")&&password.equals("0")){
-            httpServletRequest.getSession().setAttribute("sessionUser", user);
+        userDB db=new userDB();
+        User usr=db.getUser(user,password);
+        if(usr!=null){
+            httpServletRequest.getSession().setAttribute("sessionUser", usr.getUsername());
+            httpServletRequest.getSession().setAttribute("userRole", usr.getRole());
             facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO,"ACCESS GRANTED",null);
             faceContext.addMessage(null, facesMessage);
             return "ManageBankAccount";
