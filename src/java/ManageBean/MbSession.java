@@ -51,4 +51,20 @@ public class MbSession {
         return "index";
     }
     
+    public boolean canViewBalance(){
+        User.Role currentRole=(User.Role) httpServletRequest.getSession().getAttribute("userRole");
+        return currentRole==User.Role.Cashier||
+                currentRole==User.Role.BankManger||
+                currentRole==User.Role.AccountManager;
+    }
+    public boolean canViewLoanHistory(){
+        User.Role currentRole=(User.Role) httpServletRequest.getSession().getAttribute("userRole");
+        return currentRole==User.Role.BankManger||
+                currentRole==User.Role.AccountManager;
+    }
+    public boolean canViewTransactionHistory(){
+        User.Role currentRole=(User.Role) httpServletRequest.getSession().getAttribute("userRole");
+        return currentRole==User.Role.BankManger;
+    }
+    
 }
