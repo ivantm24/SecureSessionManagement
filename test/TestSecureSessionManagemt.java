@@ -6,14 +6,20 @@
 
 import ManageBean.MbLogin;
 import ManageBean.MbSession;
-import javax.ejb.embeddable.EJBContainer;
-import javax.naming.NamingException;
+import java.util.HashMap;
+import java.util.Map;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  *
@@ -21,46 +27,59 @@ import static org.junit.Assert.*;
  */
 public class TestSecureSessionManagemt {
     
+    
+    FacesContext context;
     public TestSecureSessionManagemt() {
     }
     
     @BeforeClass
     public static void setUpClass() {
+        
     }
     
     @AfterClass
     public static void tearDownClass() {
+        
     }
     
     @Before
     public void setUp() {
+        context = ContextMocker.mockFacesContext();
+        Map<String, Object> session = new HashMap<String, Object>();
+        HttpSession httpSession=new SessionMocker();
+        HttpServletRequest httpServletRequest=mock(HttpServletRequest.class);
+        ExternalContext ext = mock(ExternalContext.class);
+        when(ext.getSessionMap()).thenReturn(session);
+        when(ext.getRequest()).thenReturn(httpServletRequest);
+        when(httpServletRequest.getSession()).thenReturn(httpSession);
+        when(context.getExternalContext()).thenReturn(ext);
     }
     
     @After
     public void tearDown() {
+        if (context!=null)
+        context.release();
     }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
      @Test
-     public void testLoginCorrect() throws NamingException {  
-         EJBContainer container = javax.ejb.embeddable.EJBContainer.createEJBContainer();
-         MbLogin log;
-         log=(MbLogin)container.getContext().lookup("java:global/classes/ManageBean/MbLogin");
-         log.setUser("ivanC");
-         log.setPassword("123");         
-         assertEquals(log.login(), "ManageBankAccount");
-         container.close();
+     public void testLoginCorrect() {  
+        MbLogin log;
+        log=new MbLogin();
+        log.setUser("ivanC");
+        log.setPassword("123");                  
+        assertEquals(log.login(), "ManageBankAccount");
      }
      
      @Test
      public void testLoginIncorrect() {
-         MbLogin log;
-         log=new MbLogin();
-         log.setUser("ivanC");
-         log.setPassword("1234");         
-         assertEquals(log.login(), "index");
+        MbLogin log;
+        log=new MbLogin();
+        log.setUser("ivanC");
+        log.setPassword("1234");                  
+        assertEquals(log.login(), "index");
      }
      
      @Test
@@ -73,6 +92,7 @@ public class TestSecureSessionManagemt {
          MbSession ses=new MbSession();
          ses.closeSession();
          assertNull(ses.getRole());
+         
      }
      
 }
