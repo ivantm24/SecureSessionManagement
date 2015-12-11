@@ -1,4 +1,7 @@
 # SecureSessionManagement
+
+The architecture breaker is in the method closeSession in the class MbSession. Testing was performed using Mockito and JUnit.
+
 The project was built in netbeans using JSF and Glashfish. No database was used for this implementation.
 
 The following users are created in the system:
