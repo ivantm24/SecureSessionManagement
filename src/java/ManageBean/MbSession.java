@@ -49,8 +49,9 @@ public class MbSession {
     }
     
     public String closeSession(){
-        httpServletRequest.getSession().removeAttribute("sessionUser");
-        httpServletRequest.getSession().removeAttribute("userRole");
+        //Architecture breaker
+        //httpServletRequest.getSession().removeAttribute("sessionUser");
+        //httpServletRequest.getSession().removeAttribute("userRole");
         facesMessage=new FacesMessage(FacesMessage.SEVERITY_INFO,"SESSION CLOSED SUCCESSFULLY",null);
         faceContext.addMessage(null, facesMessage);
         return "index";
