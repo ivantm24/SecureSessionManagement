@@ -31,6 +31,7 @@ public class MbSession {
     
     public String getRole(){
         User.Role currentRole=(User.Role) httpServletRequest.getSession().getAttribute("userRole");
+        if (currentRole==null) return null;
         return currentRole.toString();
     }
 
